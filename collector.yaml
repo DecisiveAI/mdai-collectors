@@ -15,6 +15,9 @@ exporters:
     verbosity: detailed
   prometheus:
     endpoint: 0.0.0.0:8891
+    metric_expiration: 180m
+    resource_to_telemetry_conversion:
+      enabled: true
 
 connectors:
   datavolume/watcher1:

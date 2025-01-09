@@ -59,8 +59,8 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 		}
 
 		resourceMetrics := metrics.ResourceMetrics().AppendEmpty()
+		resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap) // TODO: Handle error
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
-		scopeMetric.Scope().Attributes().FromRaw(metricAttrMap) // TODO: Handle error
 
 		if c.config.CountMetricName != "" {
 			countMetric := scopeMetric.Metrics().AppendEmpty()
