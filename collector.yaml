@@ -11,7 +11,8 @@ processors:
       - service.name
 
 exporters:
-  debug: {}
+  debug:
+    verbosity: detailed
   prometheus:
     endpoint: 0.0.0.0:8891
 

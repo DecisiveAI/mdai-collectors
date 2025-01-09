@@ -4,10 +4,12 @@ import (
 	"context"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/consumer"
+	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/plog"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 	"go.opentelemetry.io/collector/pdata/ptrace"
 	"go.uber.org/zap"
+	"time"
 )
 
 type connectorImp struct {
@@ -39,6 +41,7 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 	metrics := pmetric.NewMetrics()
 
 	for i := 0; i < logs.ResourceLogs().Len(); i++ {
+		timestamp := pcommon.NewTimestampFromTime(time.Now())
 		resourceLogs := logs.ResourceLogs().At(i)
 
 		resourceAttributes := resourceLogs.Resource().Attributes()
@@ -63,8 +66,11 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 			countMetric := scopeMetric.Metrics().AppendEmpty()
 			countMetric.SetName(c.config.CountMetricName)
 			countSum := countMetric.SetEmptySum()
+			countSum.SetIsMonotonic(true)
+			countSum.SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
 			countDataPoints := countSum.DataPoints()
 			countDataPoint := countDataPoints.AppendEmpty()
+			countDataPoint.SetTimestamp(timestamp)
 			countDataPoint.SetIntValue(int64(resourceLogs.ScopeLogs().Len()))
 		}
 
@@ -72,9 +78,13 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 			bytes := plogMarshaler.LogsSize(logs)
 			volumeMetric := scopeMetric.Metrics().AppendEmpty()
 			volumeMetric.SetName(c.config.BytesMetricName)
+			volumeMetric.SetUnit("bytes")
 			volumeSum := volumeMetric.SetEmptySum()
+			volumeSum.SetIsMonotonic(true)
+			volumeSum.SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
 			volumeDataPoints := volumeSum.DataPoints()
 			volumeDataPoint := volumeDataPoints.AppendEmpty()
+			volumeDataPoint.SetTimestamp(timestamp)
 			volumeDataPoint.SetIntValue(int64(bytes))
 		}
 	}
