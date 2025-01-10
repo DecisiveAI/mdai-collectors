@@ -28,9 +28,9 @@ const (
 )
 
 var (
-	plogMarshaler    = plog.ProtoMarshaler{}
-	ptraceMarshaler  = ptrace.ProtoMarshaler{}
-	pmetricMarshaler = pmetric.ProtoMarshaler{}
+	plogSizer    = plog.ProtoMarshaler{}
+	ptraceSizer  = ptrace.ProtoMarshaler{}
+	pmetricSizer = pmetric.ProtoMarshaler{}
 )
 
 func newConnector(logger *zap.Logger, config component.Config) (*connectorImp, error) {
@@ -70,25 +70,24 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 		resourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
 		err := resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
 		if err != nil {
-			c.logger.Error("error adding attributes to datavolume metric", zap.Error(err))
+			c.logger.Error("error adding attributes to datavolume metric for logs measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
 			countValue := int64(resourceLogs.ScopeLogs().Len())
-			addMetric(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := int64(plogMarshaler.LogsSize(logs))
-			addMetric(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
+			bytes := int64(plogSizer.LogsSize(logs))
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
 	return c.metricsConsumer.ConsumeMetrics(ctx, outputMetrics)
 }
 
-// ConsumeTraces method is called for each instance of a trace sent to the connector
 func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) error {
 	outputMetrics := pmetric.NewMetrics()
 
@@ -111,18 +110,18 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 		resourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
 		err := resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
 		if err != nil {
-			c.logger.Error("error adding attributes to datavolume metric", zap.Error(err))
+			c.logger.Error("error adding attributes to datavolume metric for traces measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
 			countValue := int64(resourceSpans.ScopeSpans().Len())
-			addMetric(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := int64(ptraceMarshaler.TracesSize(traces))
-			addMetric(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
+			bytes := int64(ptraceSizer.TracesSize(traces))
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
@@ -153,25 +152,25 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 		resourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
 		err := resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
 		if err != nil {
-			c.logger.Error("error adding attributes to datavolume metric", zap.Error(err))
+			c.logger.Error("error adding attributes to datavolume metric for metrics measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
 			countValue := int64(resourceLogs.ScopeMetrics().Len())
-			addMetric(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := int64(pmetricMarshaler.MetricsSize(metrics))
-			addMetric(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
+			bytes := int64(pmetricSizer.MetricsSize(metrics))
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
 	return c.metricsConsumer.ConsumeMetrics(ctx, metrics)
 }
 
-func addMetric(scopeMetric pmetric.ScopeMetrics, metricName string, unit string, timestamp pcommon.Timestamp, bytes int64) {
+func addOutputMetricToScopeMetrics(scopeMetric pmetric.ScopeMetrics, metricName string, unit string, timestamp pcommon.Timestamp, bytes int64) {
 	metric := scopeMetric.Metrics().AppendEmpty()
 	metric.SetName(metricName)
 	if unit != "" {
