@@ -63,35 +63,33 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
-			countMetric := scopeMetric.Metrics().AppendEmpty()
-			countMetric.SetName(c.config.CountMetricName)
-			countSum := countMetric.SetEmptySum()
-			countSum.SetIsMonotonic(true)
-			countSum.SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
-			countDataPoints := countSum.DataPoints()
-			countDataPoint := countDataPoints.AppendEmpty()
-			countDataPoint.SetTimestamp(timestamp)
-			countDataPoint.SetStartTimestamp(timestamp)
-			countDataPoint.SetIntValue(int64(resourceLogs.ScopeLogs().Len()))
+			countValue := int64(resourceLogs.ScopeLogs().Len())
+			addMetric(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := plogMarshaler.LogsSize(logs)
-			volumeMetric := scopeMetric.Metrics().AppendEmpty()
-			volumeMetric.SetName(c.config.BytesMetricName)
-			volumeMetric.SetUnit("bytes")
-			volumeSum := volumeMetric.SetEmptySum()
-			volumeSum.SetIsMonotonic(true)
-			volumeSum.SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
-			volumeDataPoints := volumeSum.DataPoints()
-			volumeDataPoint := volumeDataPoints.AppendEmpty()
-			volumeDataPoint.SetTimestamp(timestamp)
-			volumeDataPoint.SetStartTimestamp(timestamp)
-			volumeDataPoint.SetIntValue(int64(bytes))
+			bytes := int64(plogMarshaler.LogsSize(logs))
+			addMetric(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
 	return c.metricsConsumer.ConsumeMetrics(ctx, metrics)
+}
+
+func addMetric(scopeMetric pmetric.ScopeMetrics, metricName string, unit string, timestamp pcommon.Timestamp, bytes int64) {
+	metric := scopeMetric.Metrics().AppendEmpty()
+	metric.SetName(metricName)
+	if unit != "" {
+		metric.SetUnit(unit)
+	}
+	sum := metric.SetEmptySum()
+	sum.SetIsMonotonic(true)
+	sum.SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
+	dataPoints := sum.DataPoints()
+	dataPoint := dataPoints.AppendEmpty()
+	dataPoint.SetTimestamp(timestamp)
+	dataPoint.SetStartTimestamp(timestamp)
+	dataPoint.SetIntValue(bytes)
 }
 
 // ConsumeTraces method is called for each instance of a trace sent to the connector
