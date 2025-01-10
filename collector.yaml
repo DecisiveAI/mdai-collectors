@@ -9,6 +9,12 @@ processors:
   groupbyattrs/watcher1:
     keys:
       - service.name
+  groupbyattrs/watcher2:
+    keys:
+      - team
+  groupbyattrs/watcher3:
+    keys:
+      - region
   deltatocumulative: {}
 
 exporters:
@@ -26,6 +32,16 @@ connectors:
       - service.name
     count_metric_name: mdai_watcher_one_count_total
     bytes_metric_name: mdai_watcher_one_bytes_total
+  datavolume/watcher2:
+    label_resource_attributes:
+      - team
+    count_metric_name: mdai_watcher_two_count_total
+    bytes_metric_name: mdai_watcher_two_bytes_total
+  datavolume/watcher3:
+    label_resource_attributes:
+      - region
+    count_metric_name: mdai_watcher_three_count_total
+    bytes_metric_name: mdai_watcher_three_bytes_total
 
 service:
   telemetry:
@@ -41,7 +57,15 @@ service:
       receivers: [otlp]
       processors: [batch, groupbyattrs/watcher1]
       exporters: [datavolume/watcher1]
+    logs/watcher2:
+      receivers: [otlp]
+      processors: [batch, groupbyattrs/watcher2]
+      exporters: [datavolume/watcher2]
+    logs/watcher3:
+      receivers: [otlp]
+      processors: [batch, groupbyattrs/watcher3]
+      exporters: [datavolume/watcher3]
     metrics/watcheroutput:
-      receivers: [datavolume/watcher1]
+      receivers: [datavolume/watcher1, datavolume/watcher2, datavolume/watcher3]
       processors: [deltatocumulative]
       exporters: [prometheus,debug]
