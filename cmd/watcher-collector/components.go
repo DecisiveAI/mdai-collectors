@@ -17,6 +17,7 @@ import (
 	batchprocessor "go.opentelemetry.io/collector/processor/batchprocessor"
 	filterprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor"
 	groupbyattrsprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/groupbyattrsprocessor"
+	deltatocumulativeprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor"
 	otlpreceiver "go.opentelemetry.io/collector/receiver/otlpreceiver"
 )
 
@@ -57,6 +58,7 @@ func components() (otelcol.Factories, error) {
 		batchprocessor.NewFactory(),
 		filterprocessor.NewFactory(),
 		groupbyattrsprocessor.NewFactory(),
+		deltatocumulativeprocessor.NewFactory(),
 	)
 	if err != nil {
 		return otelcol.Factories{}, err
@@ -65,6 +67,7 @@ func components() (otelcol.Factories, error) {
 	factories.ProcessorModules[batchprocessor.NewFactory().Type()] = "go.opentelemetry.io/collector/processor/batchprocessor v0.117.0"
 	factories.ProcessorModules[filterprocessor.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor v0.117.0"
 	factories.ProcessorModules[groupbyattrsprocessor.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/processor/groupbyattrsprocessor v0.117.0"
+	factories.ProcessorModules[deltatocumulativeprocessor.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.117.0"
 
 	factories.Connectors, err = connector.MakeFactoryMap(
 		datavolumeconnector.NewFactory(),

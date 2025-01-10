@@ -67,10 +67,11 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 			countMetric.SetName(c.config.CountMetricName)
 			countSum := countMetric.SetEmptySum()
 			countSum.SetIsMonotonic(true)
-			countSum.SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
+			countSum.SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
 			countDataPoints := countSum.DataPoints()
 			countDataPoint := countDataPoints.AppendEmpty()
 			countDataPoint.SetTimestamp(timestamp)
+			countDataPoint.SetStartTimestamp(timestamp)
 			countDataPoint.SetIntValue(int64(resourceLogs.ScopeLogs().Len()))
 		}
 
@@ -81,10 +82,11 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 			volumeMetric.SetUnit("bytes")
 			volumeSum := volumeMetric.SetEmptySum()
 			volumeSum.SetIsMonotonic(true)
-			volumeSum.SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
+			volumeSum.SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
 			volumeDataPoints := volumeSum.DataPoints()
 			volumeDataPoint := volumeDataPoints.AppendEmpty()
 			volumeDataPoint.SetTimestamp(timestamp)
+			volumeDataPoint.SetStartTimestamp(timestamp)
 			volumeDataPoint.SetIntValue(int64(bytes))
 		}
 	}

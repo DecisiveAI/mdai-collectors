@@ -7,6 +7,7 @@ go 1.23.4
 require (
 	github.com/decisiveai/watcher-collector/processors/datavolumeconnector v0.117.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.117.0
+	github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.117.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor v0.117.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/processor/groupbyattrsprocessor v0.117.0
 	go.opentelemetry.io/collector/component v0.117.0
@@ -73,6 +74,7 @@ require (
 	github.com/mostynb/go-grpc-compression v1.2.3 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal v0.117.0 // indirect
+	github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.117.0 // indirect
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/filter v0.117.0 // indirect
 	github.com/open-telemetry/opentelemetry-collector-contrib/pkg/ottl v0.117.0 // indirect
 	github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.117.0 // indirect

@@ -9,6 +9,7 @@ processors:
   groupbyattrs/watcher1:
     keys:
       - service.name
+  deltatocumulative: {}
 
 exporters:
   debug:
@@ -42,5 +43,5 @@ service:
       exporters: [datavolume/watcher1]
     metrics/watcheroutput:
       receivers: [datavolume/watcher1]
-      processors: []
+      processors: [deltatocumulative]
       exporters: [prometheus,debug]
