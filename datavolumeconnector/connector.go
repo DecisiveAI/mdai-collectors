@@ -75,8 +75,12 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
-			countValue := int64(resourceLogs.ScopeLogs().Len())
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
+			countValue := 0
+			for j := 0; j < resourceLogs.ScopeLogs().Len(); j++ {
+				scopeLogs := resourceLogs.ScopeLogs().At(j)
+				countValue += scopeLogs.LogRecords().Len()
+			}
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
@@ -115,8 +119,12 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
-			countValue := int64(resourceSpans.ScopeSpans().Len())
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
+			countValue := 0
+			for j := 0; j < resourceSpans.ScopeSpans().Len(); j++ {
+				scopeSpans := resourceSpans.ScopeSpans().At(j)
+				countValue += scopeSpans.Spans().Len()
+			}
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
@@ -157,8 +165,12 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
-			countValue := int64(resourceLogs.ScopeMetrics().Len())
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, countValue)
+			countValue := 0
+			for j := 0; j < resourceMetrics.ScopeMetrics().Len(); j++ {
+				scopeMetrics := resourceMetrics.ScopeMetrics().At(j)
+				countValue += scopeMetrics.Metrics().Len()
+			}
+			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
