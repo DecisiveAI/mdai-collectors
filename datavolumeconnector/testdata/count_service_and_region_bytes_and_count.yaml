@@ -4,12 +4,15 @@ resourceMetrics:
         - key: service.name
           value:
             stringValue: serviceA
+        - key: region
+          value:
+            stringValue: east
         - key: data_type
           value:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: service_and_region_count_total
             sum:
               aggregationTemporality: 1
               dataPoints:
@@ -17,7 +20,7 @@ resourceMetrics:
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
-          - name: service_byte_total
+          - name: service_and_region_byte_total
             unit: bytes
             sum:
               aggregationTemporality: 1
@@ -32,12 +35,15 @@ resourceMetrics:
         - key: service.name
           value:
             stringValue: serviceB
+        - key: region
+          value:
+            stringValue: west
         - key: data_type
           value:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: service_and_region_count_total
             sum:
               aggregationTemporality: 1
               dataPoints:
@@ -45,7 +51,7 @@ resourceMetrics:
                   timeUnixNano: "1678390948393759000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
-          - name: service_byte_total
+          - name: service_and_region_byte_total
             unit: bytes
             sum:
               aggregationTemporality: 1
@@ -60,12 +66,15 @@ resourceMetrics:
         - key: service.name
           value:
             stringValue: serviceA
+        - key: region
+          value:
+            stringValue: west
         - key: data_type
           value:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: service_and_region_count_total
             sum:
               aggregationTemporality: 1
               dataPoints:
@@ -73,7 +82,7 @@ resourceMetrics:
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
-          - name: service_byte_total
+          - name: service_and_region_byte_total
             unit: bytes
             sum:
               aggregationTemporality: 1
@@ -88,12 +97,15 @@ resourceMetrics:
         - key: service.name
           value:
             stringValue: serviceA
+        - key: region
+          value:
+            stringValue: west
         - key: data_type
           value:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: service_and_region_count_total
             sum:
               aggregationTemporality: 1
               dataPoints:
@@ -101,7 +113,7 @@ resourceMetrics:
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
-          - name: service_byte_total
+          - name: service_and_region_byte_total
             unit: bytes
             sum:
               aggregationTemporality: 1

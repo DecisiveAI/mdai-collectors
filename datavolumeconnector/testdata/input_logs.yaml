@@ -49,7 +49,7 @@ resourceLogs:
             stringValue: serviceB
         - key: region
           value:
-            stringValue: north
+            stringValue: west
     scopeLogs:
       - logRecords:
           - attributes:
@@ -96,7 +96,7 @@ resourceLogs:
             stringValue: serviceA
         - key: region
           value:
-            stringValue: south
+            stringValue: west
     scopeLogs:
       - logRecords:
           - attributes:

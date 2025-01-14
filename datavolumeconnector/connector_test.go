@@ -46,6 +46,27 @@ func TestLogsToMetrics(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "count_service_and_region_bytes_and_count",
+			cfg: &Config{
+				CountMetricName: "service_and_region_count_total",
+				BytesMetricName: "service_and_region_byte_total",
+				LabelResourceAttributes: []string{
+					"service.name",
+					"region",
+				},
+			},
+		},
+		{
+			name: "count_region_bytes_and_count",
+			cfg: &Config{
+				CountMetricName: "region_count_total",
+				BytesMetricName: "region_byte_total",
+				LabelResourceAttributes: []string{
+					"region",
+				},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
