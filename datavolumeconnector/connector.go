@@ -84,7 +84,10 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := int64(plogSizer.LogsSize(logs))
+			isolatedPlog := plog.NewLogs()
+			isolatedResourceLogs := isolatedPlog.ResourceLogs().AppendEmpty()
+			resourceLogs.CopyTo(isolatedResourceLogs)
+			bytes := int64(plogSizer.LogsSize(isolatedPlog))
 			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
@@ -128,7 +131,10 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := int64(ptraceSizer.TracesSize(traces))
+			isolatedPtraces := ptrace.NewTraces()
+			isolatedResourceSpans := isolatedPtraces.ResourceSpans().AppendEmpty()
+			resourceSpans.CopyTo(isolatedResourceSpans)
+			bytes := int64(ptraceSizer.TracesSize(isolatedPtraces))
 			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
@@ -174,7 +180,10 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 		}
 
 		if c.config.BytesMetricName != "" {
-			bytes := int64(pmetricSizer.MetricsSize(metrics))
+			isolatedPmetrics := pmetric.NewMetrics()
+			isolatedResourceMetrics := isolatedPmetrics.ResourceMetrics().AppendEmpty()
+			resourceMetrics.CopyTo(isolatedResourceMetrics)
+			bytes := int64(pmetricSizer.MetricsSize(isolatedPmetrics))
 			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}

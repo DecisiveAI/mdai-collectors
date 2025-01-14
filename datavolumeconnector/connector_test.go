@@ -19,9 +19,28 @@ func TestLogsToMetrics(t *testing.T) {
 		cfg  *Config
 	}{
 		{
-			name: "count_service_names",
+			name: "count_service_logs",
 			cfg: &Config{
 				CountMetricName: "service_count_total",
+				LabelResourceAttributes: []string{
+					"service.name",
+				},
+			},
+		},
+		{
+			name: "count_service_bytes",
+			cfg: &Config{
+				BytesMetricName: "service_byte_total",
+				LabelResourceAttributes: []string{
+					"service.name",
+				},
+			},
+		},
+		{
+			name: "count_service_bytes_and_count",
+			cfg: &Config{
+				CountMetricName: "service_count_total",
+				BytesMetricName: "service_byte_total",
 				LabelResourceAttributes: []string{
 					"service.name",
 				},
