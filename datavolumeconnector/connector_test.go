@@ -67,6 +67,18 @@ func TestLogsToMetrics(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "count_service_region_and_missing_attribute",
+			cfg: &Config{
+				CountMetricName: "service_and_region_count_total",
+				BytesMetricName: "service_and_region_byte_total",
+				LabelResourceAttributes: []string{
+					"service.name",
+					"region",
+					"non_existent_attr",
+				},
+			},
+		},
 	}
 
 	for _, testCase := range testCases {
