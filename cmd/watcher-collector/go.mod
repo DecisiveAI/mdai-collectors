@@ -5,7 +5,7 @@ module go.opentelemetry.io/collector/cmd/builder
 go 1.23.4
 
 require (
-	github.com/decisiveai/watcher-collector/processors/datavolumeconnector v0.117.0
+	github.com/decisiveai/watcher-collector/connector/datavolumeconnector v0.117.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.117.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.117.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor v0.117.0
@@ -174,4 +174,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/decisiveai/watcher-collector/processors/datavolumeconnector => ../../datavolumeconnector
+replace github.com/decisiveai/watcher-collector/connector/datavolumeconnector => ../../datavolumeconnector

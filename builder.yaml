@@ -22,11 +22,11 @@ receivers:
 
 
 connectors:
-  - gomod: github.com/decisiveai/watcher-collector/processors/datavolumeconnector v0.117.0
+  - gomod: github.com/decisiveai/watcher-collector/connector/datavolumeconnector v0.117.0
 
 
 replaces:
   # a list of "replaces" directives that will be part of the resulting go.mod
 
   # This replace statement is necessary since the newly added component is not found/published to GitHub yet. Replace references to GitHub path with the local path
-  - github.com/decisiveai/watcher-collector/processors/datavolumeconnector => ../../datavolumeconnector
+  - github.com/decisiveai/watcher-collector/connector/datavolumeconnector => ../../datavolumeconnector
