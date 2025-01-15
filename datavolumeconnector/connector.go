@@ -67,12 +67,12 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 			}
 		}
 
-		resourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
-		err := resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
+		outputResourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
+		err := outputResourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
 		if err != nil {
 			c.logger.Error("error adding attributes to datavolume metric for logs measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
-		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
+		outputScopeMetric := outputResourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
 			countValue := 0
@@ -80,15 +80,16 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 				scopeLogs := resourceLogs.ScopeLogs().At(j)
 				countValue += scopeLogs.LogRecords().Len()
 			}
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
+			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
 			isolatedPlog := plog.NewLogs()
 			isolatedResourceLogs := isolatedPlog.ResourceLogs().AppendEmpty()
+			// TODO: Opportunity for optimization here. Can we use protoreflect to measure these instead? Or add a reference instead?
 			resourceLogs.CopyTo(isolatedResourceLogs)
 			bytes := int64(plogSizer.LogsSize(isolatedPlog))
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
+			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
@@ -114,12 +115,12 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 			}
 		}
 
-		resourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
-		err := resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
+		outputResourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
+		err := outputResourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
 		if err != nil {
 			c.logger.Error("error adding attributes to datavolume metric for traces measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
-		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
+		outputScopeMetric := outputResourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
 			countValue := 0
@@ -127,15 +128,16 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 				scopeSpans := resourceSpans.ScopeSpans().At(j)
 				countValue += scopeSpans.Spans().Len()
 			}
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
+			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
 			isolatedPtraces := ptrace.NewTraces()
 			isolatedResourceSpans := isolatedPtraces.ResourceSpans().AppendEmpty()
+			// TODO: Opportunity for optimization here. Can we use protoreflect to measure these instead? Or add a reference instead?
 			resourceSpans.CopyTo(isolatedResourceSpans)
 			bytes := int64(ptraceSizer.TracesSize(isolatedPtraces))
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
+			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
@@ -147,9 +149,9 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 
 	for i := 0; i < metrics.ResourceMetrics().Len(); i++ {
 		timestamp := pcommon.NewTimestampFromTime(time.Now())
-		resourceLogs := metrics.ResourceMetrics().At(i)
+		resourceMetrics := metrics.ResourceMetrics().At(i)
 
-		resourceAttributes := resourceLogs.Resource().Attributes()
+		resourceAttributes := resourceMetrics.Resource().Attributes()
 		rawAttributes := resourceAttributes.AsRaw()
 
 		metricAttrMap := map[string]any{}
@@ -163,12 +165,12 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 			}
 		}
 
-		resourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
-		err := resourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
+		outputResourceMetrics := outputMetrics.ResourceMetrics().AppendEmpty()
+		err := outputResourceMetrics.Resource().Attributes().FromRaw(metricAttrMap)
 		if err != nil {
 			c.logger.Error("error adding attributes to datavolume metric for metrics measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
-		scopeMetric := resourceMetrics.ScopeMetrics().AppendEmpty()
+		outputScopeMetric := outputResourceMetrics.ScopeMetrics().AppendEmpty()
 
 		if c.config.CountMetricName != "" {
 			countValue := 0
@@ -176,19 +178,20 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 				scopeMetrics := resourceMetrics.ScopeMetrics().At(j)
 				countValue += scopeMetrics.Metrics().Len()
 			}
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
+			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
 			isolatedPmetrics := pmetric.NewMetrics()
 			isolatedResourceMetrics := isolatedPmetrics.ResourceMetrics().AppendEmpty()
+			// TODO: Opportunity for optimization here. Can we use protoreflect to measure these instead? Or add a reference instead?
 			resourceMetrics.CopyTo(isolatedResourceMetrics)
 			bytes := int64(pmetricSizer.MetricsSize(isolatedPmetrics))
-			addOutputMetricToScopeMetrics(scopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
+			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.BytesMetricName, "bytes", timestamp, bytes)
 		}
 	}
 
-	return c.metricsConsumer.ConsumeMetrics(ctx, metrics)
+	return c.metricsConsumer.ConsumeMetrics(ctx, outputMetrics)
 }
 
 func addOutputMetricToScopeMetrics(scopeMetric pmetric.ScopeMetrics, metricName string, unit string, timestamp pcommon.Timestamp, bytes int64) {
@@ -203,6 +206,5 @@ func addOutputMetricToScopeMetrics(scopeMetric pmetric.ScopeMetrics, metricName 
 	dataPoints := sum.DataPoints()
 	dataPoint := dataPoints.AppendEmpty()
 	dataPoint.SetTimestamp(timestamp)
-	dataPoint.SetStartTimestamp(timestamp)
 	dataPoint.SetIntValue(bytes)
 }
