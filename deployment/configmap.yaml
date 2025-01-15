@@ -18,9 +18,11 @@ data:
         groupbyattrs/watcher2:
           keys:
             - team
+            - log_level
         groupbyattrs/watcher3:
           keys:
             - region
+            - log_level
         groupbyattrs/watcher4:
           keys:
             - service.name
@@ -51,13 +53,13 @@ data:
         datavolume/watcher2:
           label_resource_attributes:
             - team
+            - log_level
           count_metric_name: mdai_watcher_two_count_total
-          bytes_metric_name: mdai_watcher_two_bytes_total
         datavolume/watcher3:
           label_resource_attributes:
             - region
+            - log_level
           count_metric_name: mdai_watcher_three_count_total
-          bytes_metric_name: mdai_watcher_three_bytes_total
         datavolume/watcher4:
           label_resource_attributes:
             - service.name
