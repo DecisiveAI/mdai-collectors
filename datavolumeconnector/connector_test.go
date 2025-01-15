@@ -69,13 +69,13 @@ func TestLogsToMetrics(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			require.NoError(t, tc.cfg.Validate())
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			require.NoError(t, testCase.cfg.Validate())
 			factory := NewFactory()
-			sink := &consumertest.MetricsSink{}
+			metricsSink := &consumertest.MetricsSink{}
 			conn, err := factory.CreateLogsToMetrics(context.Background(),
-				connectortest.NewNopSettings(), tc.cfg, sink)
+				connectortest.NewNopSettings(), testCase.cfg, metricsSink)
 			require.NoError(t, err)
 			require.NotNil(t, conn)
 			assert.False(t, conn.Capabilities().MutatesData)
@@ -85,14 +85,14 @@ func TestLogsToMetrics(t *testing.T) {
 				assert.NoError(t, conn.Shutdown(context.Background()))
 			}()
 
-			testLogs, err := golden.ReadLogs(filepath.Join("testdata", "input_logs.yaml"))
+			testLogs, err := golden.ReadLogs(filepath.Join("testdata", "logs", "input_logs.yaml"))
 			assert.NoError(t, err)
 			assert.NoError(t, conn.ConsumeLogs(context.Background(), testLogs))
 
-			allMetrics := sink.AllMetrics()
+			allMetrics := metricsSink.AllMetrics()
 			assert.Len(t, allMetrics, 1)
 
-			expected, err := golden.ReadMetrics(filepath.Join("testdata", tc.name+".yaml"))
+			expected, err := golden.ReadMetrics(filepath.Join("testdata", "logs", testCase.name+".yaml"))
 			assert.NoError(t, err)
 			assert.NoError(t, pmetrictest.CompareMetrics(expected, allMetrics[0],
 				pmetrictest.IgnoreTimestamp(),
