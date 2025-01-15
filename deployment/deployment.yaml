@@ -13,6 +13,11 @@ spec:
     metadata:
       labels:
         app: watcher-collector
+        app.kubernetes.io/component: watcher-collector
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8899"
+        prometheus.io/scrape: "true"
     spec:
       containers:
         - name: watcher-collector
