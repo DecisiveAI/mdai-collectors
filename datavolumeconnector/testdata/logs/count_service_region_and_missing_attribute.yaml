@@ -10,9 +10,6 @@ resourceMetrics:
         - key: data_type
           value:
             stringValue: logs
-        - key: non_existent_attr
-          value:
-            stringValue: unknown
     scopeMetrics:
       - metrics:
           - name: service_and_region_count_total
@@ -44,9 +41,6 @@ resourceMetrics:
         - key: data_type
           value:
             stringValue: logs
-        - key: non_existent_attr
-          value:
-            stringValue: unknown
     scopeMetrics:
       - metrics:
           - name: service_and_region_count_total
@@ -78,9 +72,6 @@ resourceMetrics:
         - key: data_type
           value:
             stringValue: logs
-        - key: non_existent_attr
-          value:
-            stringValue: unknown
     scopeMetrics:
       - metrics:
           - name: service_and_region_count_total
@@ -112,9 +103,6 @@ resourceMetrics:
         - key: data_type
           value:
             stringValue: logs
-        - key: non_existent_attr
-          value:
-            stringValue: unknown
     scopeMetrics:
       - metrics:
           - name: service_and_region_count_total

@@ -62,8 +62,6 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 		for _, key := range c.config.LabelResourceAttributes {
 			if rawAttributes[key] != nil {
 				metricAttrMap[key] = rawAttributes[key]
-			} else {
-				metricAttrMap[key] = "unknown"
 			}
 		}
 
@@ -160,8 +158,6 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 		for _, key := range c.config.LabelResourceAttributes {
 			if rawAttributes[key] != nil {
 				metricAttrMap[key] = rawAttributes[key]
-			} else {
-				metricAttrMap[key] = "unknown"
 			}
 		}
 
