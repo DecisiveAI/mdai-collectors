@@ -1,17 +1,9 @@
 FROM golang:1.23-bookworm as build
 ARG  OTEL_VERSION=0.117.0
-ARG TARGETPLATFORM
-RUN case "$TARGETPLATFORM" in \
-      "linux/amd64") export GOARCH=amd64 ;; \
-      "linux/arm64") export GOARCH=arm64 ;; \
-      "linux/arm/v7") export GOARCH=arm ;; \
-      *) echo "Unsupported platform: $TARGETPLATFORM"; exit 1 ;; \
-    esac && echo "Building for GOARCH=$GOARCH"
 WORKDIR /app
-RUN export CGO_ENABLED=0
-RUN go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
+RUN CGO_ENABLED=0 go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
 COPY . .
-RUN builder --config=builder.yaml
+RUN CGO_ENABLED=0 builder --config=builder.yaml
 
 FROM scratch
 COPY --from=build app/cmd/watcher-collector /
