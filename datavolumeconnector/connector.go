@@ -48,9 +48,9 @@ func (c *connectorImp) Capabilities() consumer.Capabilities {
 
 func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 	outputMetrics := pmetric.NewMetrics()
+	timestamp := pcommon.NewTimestampFromTime(time.Now())
 
 	for i := 0; i < logs.ResourceLogs().Len(); i++ {
-		timestamp := pcommon.NewTimestampFromTime(time.Now())
 		resourceLogs := logs.ResourceLogs().At(i)
 
 		resourceAttributes := resourceLogs.Resource().Attributes()
@@ -96,9 +96,9 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 
 func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) error {
 	outputMetrics := pmetric.NewMetrics()
+	timestamp := pcommon.NewTimestampFromTime(time.Now())
 
 	for i := 0; i < traces.ResourceSpans().Len(); i++ {
-		timestamp := pcommon.NewTimestampFromTime(time.Now())
 		resourceSpans := traces.ResourceSpans().At(i)
 
 		resourceAttributes := resourceSpans.Resource().Attributes()
@@ -144,9 +144,9 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 
 func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metrics) error {
 	outputMetrics := pmetric.NewMetrics()
+	timestamp := pcommon.NewTimestampFromTime(time.Now())
 
 	for i := 0; i < metrics.ResourceMetrics().Len(); i++ {
-		timestamp := pcommon.NewTimestampFromTime(time.Now())
 		resourceMetrics := metrics.ResourceMetrics().At(i)
 
 		resourceAttributes := resourceMetrics.Resource().Attributes()
