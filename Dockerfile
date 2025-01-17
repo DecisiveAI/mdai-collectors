@@ -1,9 +1,12 @@
-FROM golang:1.23-bookworm as build
-ARG  OTEL_VERSION=0.117.0
+FROM golang:1.23-bookworm AS build
+ARG OTEL_VERSION=0.117.0
+ARG TARGETOS
+ARG TARGETARCH
+ENV CGO_ENABLED=0
 WORKDIR /app
-RUN CGO_ENABLED=0 go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
+RUN curl https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv${OTEL_VERSION}/ocb_${OTEL_VERSION}_${TARGETOS}_${TARGETARCH} -o /app/builder && chmod +x /app/builder
 COPY . .
-RUN CGO_ENABLED=0 builder --config=builder.yaml
+RUN /app/builder --config=builder.yaml
 
 FROM scratch
 COPY --from=build app/cmd/watcher-collector /
