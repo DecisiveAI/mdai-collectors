@@ -17,17 +17,7 @@ data:
             - service.name
         groupbyattrs/watcher2:
           keys:
-            - team
-            - log_level
-        groupbyattrs/watcher3:
-          keys:
-            - region
-            - log_level
-        groupbyattrs/watcher4:
-          keys:
             - service.name
-            - team
-            - region
         deltatocumulative: {}
         
         filter/severity:
@@ -35,6 +25,15 @@ data:
           logs:
             log_record:
               - 'attributes["log_level"] == "INFO"'
+                      
+        filter/watcher1:
+          logs:
+            log_record:
+              - 'resource.attributes["watcher_direction"] != "received"'
+        filter/watcher2:
+          logs:
+            log_record:
+              - 'resource.attributes["watcher_direction"] != "exported"'
       
       exporters:
         debug:
@@ -48,25 +47,14 @@ data:
         datavolume/watcher1:
           label_resource_attributes:
             - service.name
-          count_metric_name: mdai_watcher_one_count_total
-          bytes_metric_name: mdai_watcher_one_bytes_total
+          count_metric_name: items_received_by_service_total
+          bytes_metric_name: bytes_received_by_service_total
         datavolume/watcher2:
           label_resource_attributes:
-            - team
-            - log_level
-          count_metric_name: mdai_watcher_two_count_total
-        datavolume/watcher3:
-          label_resource_attributes:
-            - region
-            - log_level
-          count_metric_name: mdai_watcher_three_count_total
-        datavolume/watcher4:
-          label_resource_attributes:
             - service.name
-            - team
-            - region
-          count_metric_name: mdai_watcher_four_count_total
-          bytes_metric_name: mdai_watcher_four_bytes_total
+          count_metric_name: items_sent_by_service_total
+          bytes_metric_name: bytes_sent_by_service_total
+       
       
       service:
         telemetry:
@@ -80,21 +68,13 @@ data:
         pipelines:
           logs/watcher1:
             receivers: [otlp]
-            processors: [batch, groupbyattrs/watcher1]
+            processors: [filter/watcher1, batch, groupbyattrs/watcher1]
             exporters: [datavolume/watcher1]
           logs/watcher2:
             receivers: [otlp]
-            processors: [batch, groupbyattrs/watcher2]
+            processors: [filter/watcher2, batch, groupbyattrs/watcher2]
             exporters: [datavolume/watcher2]
-          logs/watcher3:
-            receivers: [otlp]
-            processors: [batch, groupbyattrs/watcher3]
-            exporters: [datavolume/watcher3]
-          logs/watcher4:
-            receivers: [otlp]
-            processors: [filter/severity, batch, groupbyattrs/watcher4]
-            exporters: [datavolume/watcher4]
           metrics/watcheroutput:
-            receivers: [datavolume/watcher1, datavolume/watcher2, datavolume/watcher3, datavolume/watcher4]
+            receivers: [datavolume/watcher1, datavolume/watcher2]
             processors: [deltatocumulative]
             exporters: [prometheus,debug]
