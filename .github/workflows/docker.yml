@@ -102,3 +102,4 @@ jobs:
       #     subject-name: public.ecr.aws/p3k6k6h3/${{ env.IMAGE_NAME }}
       #     subject-digest: ${{ steps.push.outputs.digest }}
       #     push-to-registry: true
+      
