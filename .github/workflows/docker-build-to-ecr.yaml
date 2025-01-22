@@ -1,0 +1,69 @@
+name: Build and Push Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Semantic version for tagging the image. Defaults to commit-HASH if not provided.'
+        required: false
+        default: ''
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up QEMU for multi-platform builds
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Get current branch and short hash
+        id: vars
+        run: |
+          echo "branch_name=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
+          echo "short_hash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Define Docker image tags
+        id: tags
+        run: |
+          region="${{ secrets.AWS_REGION }}"
+          account_id=$(aws sts get-caller-identity --query 'Account' --output text)
+
+          # Base image name
+          image="public.ecr.aws/p3k6k6h3/watcher-collector"
+
+          # Determine tag
+          if [[ -z "${{ inputs.version }}" ]]; then
+            tags="${image}:commit-${SHORT_HASH}"
+          else
+            tags="${image}:${{ inputs.version }}"
+          fi
+
+          echo "image=$image" >> $GITHUB_ENV
+          echo "tags=$tags" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --tag "${TAGS}" \
+            .
