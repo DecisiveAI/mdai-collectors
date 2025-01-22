@@ -29,8 +29,8 @@ jobs:
         with:
           go-version: '~1.23'
 
-      - name: Vendor
-        run: go mod vendor
+      - name: Install OTEL Collector Builder
+        run: CGO_ENABLED=0 go install go.opentelemetry.io/collector/cmd/builder@v0.117.0
 
       - name: Build
         run: make build
@@ -102,3 +102,4 @@ jobs:
       #     subject-name: public.ecr.aws/p3k6k6h3/${{ env.IMAGE_NAME }}
       #     subject-digest: ${{ steps.push.outputs.digest }}
       #     push-to-registry: true
+      
