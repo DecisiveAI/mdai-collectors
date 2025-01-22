@@ -19,13 +19,7 @@ data:
           keys:
             - service.name
         deltatocumulative: {}
-        
-        filter/severity:
-          error_mode: ignore
-          logs:
-            log_record:
-              - 'attributes["log_level"] == "INFO"'
-                      
+                              
         filter/watcher1:
           logs:
             log_record:
