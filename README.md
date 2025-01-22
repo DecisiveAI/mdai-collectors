@@ -4,12 +4,16 @@ A purpose-built OpenTelemetry collector for watching and routing telemetry strea
 
 # Usage
 
-## Build the collector binary
-
-> Prerequisite: Install the collector builder by following instructions [here](https://opentelemetry.io/docs/collector/custom-collector/#step-1---install-the-builder)
+## Setup: Install the OpenTelemetry Collector Builder
 
 ```sh
-ocb --config=builder.yaml 
+CGO_ENABLED=0 go install go.opentelemetry.io/collector/cmd/builder@v0.117.0
+```
+
+## Build the collector binary
+
+```sh
+builder --config=builder.yaml 
 ```
 
 ## Run the collector

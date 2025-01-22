@@ -29,11 +29,11 @@ jobs:
         with:
           go-version: '~1.23'
 
-#      - name: Vendor
-#        run: go mod vendor
+      - name: Install OTEL Collector Builder
+        run: CGO_ENABLED=0 go install go.opentelemetry.io/collector/cmd/builder@v0.117.0
 
-#      - name: Build
-#        run: make build
+      - name: Build
+        run: make build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
