@@ -13,4 +13,5 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} /app/builder --config=bu
 FROM scratch
 COPY --from=builder app/cmd/watcher-collector /
 EXPOSE 4317/tcp 4318/tcp 8891/tcp 8899/tcp 13133/tcp
+USER 65533:65533
 ENTRYPOINT ["/mdai-watcher-collector"]
