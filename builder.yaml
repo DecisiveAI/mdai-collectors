@@ -24,6 +24,8 @@ receivers:
 connectors:
   - gomod: github.com/decisiveai/watcher-collector/connector/datavolumeconnector v0.117.0
 
+extensions:
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/cgroupruntimeextension v0.117.0
 
 replaces:
   # a list of "replaces" directives that will be part of the resulting go.mod
