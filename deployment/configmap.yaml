@@ -11,7 +11,6 @@ data:
               endpoint: 0.0.0.0:4317
       
       processors:
-        batch: {}
         groupbyattrs/watcher1:
           keys:
             - service.name
@@ -49,6 +48,13 @@ data:
           count_metric_name: items_sent_by_service_total
           bytes_metric_name: bytes_sent_by_service_total
        
+
+      extensions:
+        cgroupruntime:
+          gomaxprocs:
+            enabled: true
+          gomemlimit:
+            enabled: true
       
       service:
         telemetry:
@@ -62,11 +68,11 @@ data:
         pipelines:
           logs/watcher1:
             receivers: [otlp]
-            processors: [filter/watcher1, batch, groupbyattrs/watcher1]
+            processors: [filter/watcher1, groupbyattrs/watcher1]
             exporters: [datavolume/watcher1]
           logs/watcher2:
             receivers: [otlp]
-            processors: [filter/watcher2, batch, groupbyattrs/watcher2]
+            processors: [filter/watcher2, groupbyattrs/watcher2]
             exporters: [datavolume/watcher2]
           metrics/watcheroutput:
             receivers: [datavolume/watcher1, datavolume/watcher2]

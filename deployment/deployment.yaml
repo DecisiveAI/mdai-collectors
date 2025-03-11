@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: watcher-collector
-          image: public.ecr.aws/p3k6k6h3/watcher-collector:0.1.0-dev
+          image: public.ecr.aws/p3k6k6h3/watcher-collector:0.1
           ports:
             - containerPort: 8888
               name: otelcol-metrics
