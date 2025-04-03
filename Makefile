@@ -10,4 +10,8 @@ all: build
 
 .PHONY: build
 build:
-	builder --config=builder.yaml
+	ocb --config=config/builder/watcher-builder.yaml
+
+.PHONY: build-debug-collector
+build-debug-collector:
+	ocb --config=config/builder/debug-builder.yaml
