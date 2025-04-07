@@ -1,0 +1,76 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch: {}
+  filter/severity: {}
+
+exporters:
+  awss3/audit: {}
+  awss3/collector: {}
+  awss3/mdai_components: {}
+  awss3/otherlogs: {}
+  file/audit: {}
+  file/collector: {}
+  file/mdai_components: {}
+
+connectors:
+  routing/logstream:
+    default_pipelines: [logs/other]
+    table:
+      - context: log
+        condition: attributes["mdai-logstream"] == "audit"
+        pipelines: [logs/s3audit, logs/bufferaudit]
+      - context: log
+        condition: attributes["mdai-logstream"] == "collector"
+        pipelines: [logs/s3collector, logs/buffercollector]
+      - context: log
+        condition: attributes["mdai-logstream"] == "hub"
+        pipelines: [logs/s3hub, logs/bufferhub]
+
+extensions:
+  cgroupruntime:
+    gomaxprocs:
+      enabled: true
+    gomemlimit:
+      enabled: true
+
+service:
+  pipelines:
+    logs/input:
+      receivers: [otlp]
+      processors: [filter, batch]
+      exporters: [routing/logstream]
+    logs/bufferaudit:
+      receivers: [routing/logstream]
+      processors: [batch]
+      exporters: [file/audit]
+    logs/s3audit:
+      receivers: [routing/logstream]
+      processors: [filter/severity, batch]
+      exporters: [awss3/audit]
+    logs/bufferhub:
+      receivers: [routing/logstream]
+      processors: [batch]
+      exporters: [file/mdai]
+    logs/s3hub:
+      receivers: [routing/logstream]
+      processors: [filter/severity, batch]
+      exporters: [awss3/mdai]
+    logs/buffercollector:
+      receivers: [routing/logstream]
+      processors: [batch]
+      exporters: [file/collector]
+    logs/s3collector:
+      receivers: [routing/logstream]
+      processors: [filter/severity, batch]
+      exporters: [awss3/collector]
+    logs/other:
+      receivers: [routing/logstream]
+      processors: [batch]
+      exporters: [awss3/otherlogs]

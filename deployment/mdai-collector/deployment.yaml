@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdai-collector
+  labels:
+    app: mdai-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdai-collector
+  template:
+    metadata:
+      labels:
+        app: mdai-collector
+        app.kubernetes.io/component: mdai-collector
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8899"
+        prometheus.io/scrape: "true"
+    spec:
+      containers:
+        - name: mdai-collector
+          image: public.ecr.aws/p3k6k6h3/mdai-collector:0.1
+          ports:
+            - containerPort: 8888
+              name: otelcol-metrics
+            - containerPort: 8899
+              name: mdai-metrics
+            - containerPort: 4317
+              name: otlp-grpc
+            - containerPort: 4318
+              name: otlp-http
+          volumeMounts:
+            - name: config-volume
+              mountPath: /conf/collector.yaml
+              subPath: collector.yaml
+          command:
+            - "/mdai-mdai-collector"
+            - "--config=/conf/collector.yaml"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mdai-collector-config
