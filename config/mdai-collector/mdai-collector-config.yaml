@@ -5,6 +5,10 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+  k8s_events:
+    auth_type: kubeConfig
+    namespaces:
+      - mdai
 
 processors:
   batch:
@@ -15,16 +19,19 @@ processors:
     error_mode: ignore
     logs:
       log_record:
-        - 'severity_number <= SEVERITY_NUMBER_WARN'
+        - 'severity_number < SEVERITY_NUMBER_WARN'
 
 exporters:
-  awss3/audit: {}
-  awss3/collector: {}
-  awss3/mdai_components: {}
-  awss3/otherlogs: {}
-  file/audit: {}
-  file/collector: {}
-  file/mdai_components: {}
+  debug: {}
+  debug/verbose:
+    verbosity: detailed
+#  awss3/audit: {}
+#  awss3/collector: {}
+#  awss3/mdai_components: {}
+#  awss3/otherlogs: {}
+#  file/audit: {}
+#  file/collector: {}
+#  file/mdai_components: {}
 
 connectors:
   routing/logstream:
@@ -49,35 +56,50 @@ extensions:
 
 service:
   pipelines:
+    logs/k8s_events:
+      receivers: [k8s_events]
+      processors: []
+      exporters: [debug/verbose]
+    metrics:
+      receivers: [otlp]
+      processors: []
+      exporters: [debug]
     logs/input:
       receivers: [otlp]
-      processors: [filter/severity, batch]
+      processors: [] #filter/severity] #, batch]
       exporters: [routing/logstream]
     logs/bufferaudit:
       receivers: [routing/logstream]
-      processors: [batch]
-      exporters: [file/audit]
+      processors: [] #batch]
+      exporters: [debug]
+#      exporters: [file/audit]
     logs/s3audit:
       receivers: [routing/logstream]
-      processors: [filter/severity, batch]
-      exporters: [awss3/audit]
+      processors: [filter/severity] #, batch]
+      exporters: [debug]
+#      exporters: [awss3/audit]
     logs/bufferhub:
       receivers: [routing/logstream]
-      processors: [batch]
-      exporters: [file/mdai_components]
+      processors: [] #batch]
+      exporters: [debug]
+#      exporters: [file/mdai_components]
     logs/s3hub:
       receivers: [routing/logstream]
-      processors: [filter/severity, batch]
-      exporters: [awss3/mdai_components]
+      processors: [filter/severity] #, batch]
+      exporters: [debug]
+#      exporters: [awss3/mdai_components]
     logs/buffercollector:
       receivers: [routing/logstream]
-      processors: [batch]
-      exporters: [file/collector]
+      processors: [] #batch]
+      exporters: [debug]
+#      exporters: [file/collector]
     logs/s3collector:
       receivers: [routing/logstream]
-      processors: [filter/severity, batch]
-      exporters: [awss3/collector]
+      processors: [filter/severity] #, batch]
+      exporters: [debug]
+#      exporters: [awss3/collector]
     logs/other:
       receivers: [routing/logstream]
-      processors: [batch]
-      exporters: [awss3/otherlogs]
+      processors: [] #batch]
+      exporters: [debug]
+#      exporters: [awss3/otherlogs]

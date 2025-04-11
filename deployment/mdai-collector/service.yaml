@@ -1,15 +1,16 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: mdai-collector-service
-  labels:
-    app: mdai-collector
-spec:
-  selector:
-    app: mdai-collector
-  ports:
-    - port: 4317
-      targetPort: otlp-grpc
-      protocol: TCP
-      name: otlp-grpc
-  type: ClusterIP
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: mdai-collector-service
+#  namespace: mdai
+#  labels:
+#    app: mdai-collector
+#spec:
+#  selector:
+#    app: mdai-collector
+#  ports:
+#    - port: 4317
+#      targetPort: otlp-grpc
+#      protocol: TCP
+#      name: otlp-grpc
+#  type: ClusterIP

@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: mdai
   name: mdai-collector
   labels:
     app: mdai-collector
@@ -19,9 +20,10 @@ spec:
         prometheus.io/port: "8899"
         prometheus.io/scrape: "true"
     spec:
+      serviceAccountName: mdai-collector
       containers:
         - name: mdai-collector
-          image: public.ecr.aws/p3k6k6h3/mdai-collector:0.1
+          image: mdai-collector:0.1.0
           ports:
             - containerPort: 8888
               name: otelcol-metrics
@@ -36,7 +38,7 @@ spec:
               mountPath: /conf/collector.yaml
               subPath: collector.yaml
           command:
-            - "/mdai-mdai-collector"
+            - "/collector"
             - "--config=/conf/collector.yaml"
       volumes:
         - name: config-volume

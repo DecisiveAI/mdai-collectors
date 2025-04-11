@@ -1,5 +1,5 @@
 dist:
-  name: mdai-collector
+  name: collector
   description: MyDecisive Debug Collector
   output_path: ./cmd/mdai-collector
 
