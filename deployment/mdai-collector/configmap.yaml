@@ -35,9 +35,30 @@ data:
     #  awss3/collector: {}
     #  awss3/mdai_components: {}
     #  awss3/otherlogs: {}
-    #  file/audit: {}
-    #  file/collector: {}
-    #  file/mdai_components: {}
+      file/audit:
+        path: /data/audit-logs.json
+        format: json
+        rotation:
+          max_days: 0.1
+          max_backups: 1
+      file/collector:
+        path: /data/collector-logs.json
+        format: json
+        rotation:
+          max_days: 0.1
+          max_backups: 1
+      file/mdai_components:
+        path: /data/components-logs.json
+        format: json
+        rotation:
+          max_days: 0.1
+          max_backups: 1
+      file/other_logs:
+        path: /data/other-logs.json
+        format: json
+        rotation:
+          max_days: 0.1
+          max_backups: 1
     
     connectors:
       routing/logstream:
@@ -77,8 +98,7 @@ data:
         logs/bufferaudit:
           receivers: [routing/logstream]
           processors: [] #batch]
-          exporters: [debug]
-        #      exporters: [file/audit]
+          exporters: [debug, file/audit]
         logs/s3audit:
           receivers: [routing/logstream]
           processors: [filter/severity] #, batch]
@@ -87,8 +107,7 @@ data:
         logs/bufferhub:
           receivers: [routing/logstream]
           processors: [] #batch]
-          exporters: [debug]
-        #      exporters: [file/mdai_components]
+          exporters: [debug, file/mdai_components]
         logs/s3hub:
           receivers: [routing/logstream]
           processors: [filter/severity] #, batch]
@@ -97,8 +116,7 @@ data:
         logs/buffercollector:
           receivers: [routing/logstream]
           processors: [] #batch]
-          exporters: [debug]
-        #      exporters: [file/collector]
+          exporters: [debug, file/collector]
         logs/s3collector:
           receivers: [routing/logstream]
           processors: [filter/severity] #, batch]
@@ -107,5 +125,5 @@ data:
         logs/other:
           receivers: [routing/logstream]
           processors: [] #batch]
-          exporters: [debug]
+          exporters: [debug, file/other_logs]
     #      exporters: [awss3/otherlogs]
