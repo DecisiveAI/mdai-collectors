@@ -4,9 +4,9 @@ metadata:
   name: mdai-telemetry-pvc
   namespace: mdai
 spec:
-  storageClassName: ""
+  storageClassName: standard
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 1Gi

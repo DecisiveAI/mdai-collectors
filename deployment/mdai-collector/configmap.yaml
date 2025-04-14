@@ -64,13 +64,13 @@ data:
       routing/logstream:
         default_pipelines: [logs/other]
         table:
-          - context: log
+          - context: resource
             condition: attributes["mdai-logstream"] == "audit"
             pipelines: [logs/s3audit, logs/bufferaudit]
-          - context: log
+          - context: resource
             condition: attributes["mdai-logstream"] == "collector"
             pipelines: [logs/s3collector, logs/buffercollector]
-          - context: log
+          - context: resource
             condition: attributes["mdai-logstream"] == "hub"
             pipelines: [logs/s3hub, logs/bufferhub]
     
