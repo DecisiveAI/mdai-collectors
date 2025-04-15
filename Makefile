@@ -10,7 +10,7 @@ all: build
 
 .PHONY: build
 build:
-	ocb --config=config/watcher-collector/watcher-builder.yaml
+	ocb --config=config/watcher-collector/watcher-collector-builder.yaml
 
 .PHONY: build-mdai-collector
 build-mdai-collector:
