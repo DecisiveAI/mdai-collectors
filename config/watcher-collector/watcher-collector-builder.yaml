@@ -1,5 +1,5 @@
 dist:
-  name: collector
+  name: mdai-watcher-collector
   description: MyDecisive Watcher Collector
   output_path: ./cmd/watcher-collector
 

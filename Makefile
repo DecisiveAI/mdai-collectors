@@ -5,6 +5,9 @@ else
 GOBIN=$(shell go env GOBIN)
 endif
 
+# Update this version to match new release tag and run helm targets
+VERSION = 0.1.4
+
 .PHONY: all
 all: build
 
@@ -12,6 +15,14 @@ all: build
 build:
 	ocb --config=config/watcher-collector/watcher-collector-builder.yaml
 
+.PHONY: docker-build
+docker-build:
+	docker build -t watcher-collector:0.1.4 .
+
 .PHONY: build-mdai-collector
 build-mdai-collector:
 	ocb --config=config/mdai-collector/mdai-collector-builder.yaml
+
+.PHONY: docker-build-mdai-collector
+docker-build-mdai-collector:
+	docker build -t mdai-collector:0.1.4 -f mdai-collector.Dockerfile .

@@ -1,6 +1,6 @@
 .DS_Store
 .idea/
 .vscode/
-cmd/watcher-collector/collector
-cmd/mdai-collector/collector
+cmd/watcher-collector/mdai-watcher-collector
+cmd/mdai-collector/mdai-collector
 vendor/
