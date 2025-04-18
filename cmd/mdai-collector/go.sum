@@ -482,6 +482,8 @@ github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterproces
 github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor v0.121.0/go.mod h1:cAik9bdnGeSOuuF+yzqa6eIy8DvCU9/VyzB4QDqx5hA=
 github.com/open-telemetry/opentelemetry-collector-contrib/processor/groupbyattrsprocessor v0.121.0 h1:aubBv9NdnP0S3w235AtmwDoI41zhrXdDYO7RaOki8ts=
 github.com/open-telemetry/opentelemetry-collector-contrib/processor/groupbyattrsprocessor v0.121.0/go.mod h1:mMicKbZlHAhnC8mFk5ts7HmGb/SyIhCCt89hLooeh0Q=
+github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor v0.121.0 h1:loqF3gHytENLFAzvfhLE86ibUMm+H13+EdZID+YrZn4=
+github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor v0.121.0/go.mod h1:MT9ZLOqLy1MlPG0/6U3X9vJON9lJv5r30IrDvZkuUEk=
 github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8seventsreceiver v0.121.0 h1:Hs14T6havZGYhjOpZduojlmvIN6046vXZI17/4BH3bE=
 github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8seventsreceiver v0.121.0/go.mod h1:nELEnYNMwyuv7W8YVNcQjzPo1Y62O5NHXOjUKJecQ4w=
 github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver v0.121.0 h1:BNlMoXIHA7mvurx5hdDni1YWsfa9pd43WgPzP/HVUi4=

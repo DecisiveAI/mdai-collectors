@@ -22,10 +22,12 @@ spec:
         prometheus.io/scrape: "true"
     spec:
       serviceAccountName: mdai-collector
-
       containers:
         - name: mdai-collector
-          image: mdai-collector:0.1.0
+          image: mdai-collector:0.1.4
+          env:
+            - name: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
           volumeMounts:
             - name: config-volume
               mountPath: /conf/collector.yaml
@@ -40,7 +42,7 @@ spec:
             - containerPort: 4318
               name: otlp-http
           command:
-            - "/collector"
+            - "/mdai-collector"
             - "--config=/conf/collector.yaml"
       volumes:
         - name: config-volume
