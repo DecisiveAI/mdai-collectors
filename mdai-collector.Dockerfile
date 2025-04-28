@@ -8,11 +8,11 @@ ARG TARGETOS
 ARG TARGETARCH
 RUN curl --proto '=https' --tlsv1.2 -fL https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv${OTEL_VERSION}/ocb_${OTEL_VERSION}_${BUILDOS}_${BUILDARCH} -o /app/builder && chmod +x /app/builder
 COPY . .
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} /app/builder --config=config/watcher-collector/watcher-collector-builder.yaml
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} /app/builder --config=config/mdai-collector/mdai-collector-builder.yaml
 
 FROM scratch
 ARG VARIANT
-COPY --from=builder app/cmd/watcher-collector /
+COPY --from=builder app/cmd/mdai-collector /
 EXPOSE 4317/tcp 4318/tcp 8891/tcp 8899/tcp 13133/tcp
 USER 65533:65533
-ENTRYPOINT ["/mdai-watcher-collector"]
+ENTRYPOINT ["/mdai-collector"]

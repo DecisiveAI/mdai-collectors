@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mdai
+  name: mdai-collector
+  labels:
+    app: mdai-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdai-collector
+
+  template:
+    metadata:
+      labels:
+        app: mdai-collector
+        app.kubernetes.io/component: mdai-collector
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8899"
+        prometheus.io/scrape: "true"
+    spec:
+      serviceAccountName: mdai-collector
+      containers:
+        - name: mdai-collector
+          image: mdai-collector:0.1.4
+          env:
+            - name: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+          volumeMounts:
+            - name: config-volume
+              mountPath: /conf/collector.yaml
+              subPath: collector.yaml
+            - name: mdai-telemetry
+              mountPath: /data
+          ports:
+            - containerPort: 8888
+              name: otelcol-metrics
+            - containerPort: 4317
+              name: otlp-grpc
+            - containerPort: 4318
+              name: otlp-http
+          command:
+            - "/mdai-collector"
+            - "--config=/conf/collector.yaml"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mdai-collector-config
+        - name: mdai-telemetry
+          persistentVolumeClaim:
+            claimName: mdai-telemetry-pvc
