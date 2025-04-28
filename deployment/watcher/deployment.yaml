@@ -36,7 +36,7 @@ spec:
               mountPath: /conf/collector.yaml
               subPath: collector.yaml
           command:
-            - "/collector"
+            - "/mdai-watcher-collector"
             - "--config=/conf/collector.yaml"
       volumes:
         - name: config-volume
