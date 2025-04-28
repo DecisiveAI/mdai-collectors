@@ -1,4 +1,4 @@
-name: Docker push for main branch
+name: Docker push watcher-collector for new tag
 
 on:
   workflow_dispatch:
