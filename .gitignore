@@ -4,3 +4,5 @@
 cmd/watcher-collector/mdai-watcher-collector
 cmd/mdai-collector/mdai-collector
 vendor/
+sekret.yaml
+secret.yaml
