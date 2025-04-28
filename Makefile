@@ -13,7 +13,7 @@ all: build
 
 .PHONY: build
 build:
-	ocb --config=config/watcher-collector/watcher-collector-builder.yaml
+	builder --config=config/watcher-collector/watcher-collector-builder.yaml
 
 .PHONY: docker-build
 docker-build:
@@ -21,7 +21,7 @@ docker-build:
 
 .PHONY: build-mdai-collector
 build-mdai-collector:
-	ocb --config=config/mdai-collector/mdai-collector-builder.yaml
+	builder --config=config/mdai-collector/mdai-collector-builder.yaml
 
 .PHONY: docker-build-mdai-collector
 docker-build-mdai-collector:
