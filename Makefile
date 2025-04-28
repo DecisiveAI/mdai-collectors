@@ -17,7 +17,7 @@ build:
 
 .PHONY: docker-build
 docker-build:
-	docker build -t  public.ecr.aws/decisiveai/watcher-collector:0.1.4 .
+	docker build -t  public.ecr.aws/decisiveai/watcher-collector:${VERSION} .
 
 .PHONY: build-mdai-collector
 build-mdai-collector:
@@ -25,4 +25,4 @@ build-mdai-collector:
 
 .PHONY: docker-build-mdai-collector
 docker-build-mdai-collector:
-	docker build -t public.ecr.aws/decisiveai/mdai-collector:0.1.4 -f mdai-collector.Dockerfile .
+	docker build -t public.ecr.aws/decisiveai/mdai-collector:${VERSION} -f mdai-collector.Dockerfile .
