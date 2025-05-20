@@ -4,6 +4,8 @@ module go.opentelemetry.io/collector/cmd/builder
 
 go 1.23.4
 
+toolchain go1.24.3
+
 require (
 	github.com/decisiveai/watcher-collector/datavolumeconnector v0.1.3
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.121.0
