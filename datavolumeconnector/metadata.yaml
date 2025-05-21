@@ -1,5 +1,5 @@
 type: datavolume
-github_project: decisiveai/watcher-collector
+github_project: decisiveai/mdai-collectors
 
 status:
   class: connector

@@ -8,7 +8,7 @@ import (
 
 var (
 	Type      = component.MustNewType("datavolume")
-	ScopeName = "github.com/decisiveai/watcher-collector/datavolumeconnector"
+	ScopeName = "github.com/decisiveai/mdai-collectors/datavolumeconnector"
 )
 
 const (

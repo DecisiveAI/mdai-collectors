@@ -58,15 +58,15 @@ spec:
         keys:
           - service.name
 
-      resource/watcher_receiver_tag:
+      resource/observer_receiver_tag:
         attributes:
-          - key: watcher_direction
+          - key: observer_direction
             value: "received"
             action: upsert
 
-      resource/watcher_exporter_tag:
+      resource/observer_exporter_tag:
         attributes:
-          - key: watcher_direction
+          - key: observer_direction
             value: "exported"
             action: upsert
 
@@ -84,8 +84,8 @@ spec:
 
     exporters:
       debug: { }
-      otlp/watcher:
-        endpoint: mdaihub-sample-watcher-collector-service.mdai.svc.cluster.local:4317
+      otlp/observer:
+        endpoint: mdaihub-sample-observer-collector-service.mdai.svc.cluster.local:4317
         tls:
           insecure: true
 
@@ -107,10 +107,10 @@ spec:
       pipelines:
         logs/customer_pipeline:
           receivers: [ otlp, fluentforward ]
-          processors: [ filter/service_list, memory_limiter, batch, groupbyattrs, resource/watcher_exporter_tag ]
-          exporters: [ debug, otlp/watcher ]
+          processors: [ filter/service_list, memory_limiter, batch, groupbyattrs, resource/observer_exporter_tag ]
+          exporters: [ debug, otlp/observer ]
 
         logs/watch_receivers:
           receivers: [ otlp, fluentforward ]
-          processors: [ memory_limiter, batch, groupbyattrs, resource/watcher_receiver_tag ]
-          exporters: [ debug, otlp/watcher ]
+          processors: [ memory_limiter, batch, groupbyattrs, resource/observer_receiver_tag ]
+          exporters: [ debug, otlp/observer ]

@@ -1,4 +1,4 @@
-name: Docker push watcher-collector for new tag
+name: Docker push observer-collector for new tag
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
       - 'v*'
 
 env:
-  IMAGE_NAME: watcher-collector
+  IMAGE_NAME: observer-collector
   TOKEN: ${{ secrets.TOKEN_OPERATOR }}
 
 jobs:
