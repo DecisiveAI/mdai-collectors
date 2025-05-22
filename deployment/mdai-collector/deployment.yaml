@@ -24,7 +24,7 @@ spec:
       serviceAccountName: mdai-collector
       containers:
         - name: mdai-collector
-          image: mdai-collector:0.1.4
+          image: mdai-collector:0.1.5
           env:
             - name: AWS_ACCESS_KEY_ID
             - name: AWS_SECRET_ACCESS_KEY
