@@ -1,4 +1,4 @@
-# watcher-collector
+# observer-collector
 
 A purpose-built OpenTelemetry collector for watching and routing telemetry streams
 
@@ -19,5 +19,5 @@ builder --config=builder.yaml
 ## Run the collector
 
 ```sh
-./cmd/watcher-collector/mdai-watcher-collector --config=collector.yaml  
+./cmd/observer-collector/mdai-observer-collector --config=collector.yaml  
 ```

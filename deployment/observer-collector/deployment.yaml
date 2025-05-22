@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: watcher-collector
+  name: observer-collector
   labels:
-    app: watcher-collector
+    app: observer-collector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: watcher-collector
+      app: observer-collector
   template:
     metadata:
       labels:
-        app: watcher-collector
-        app.kubernetes.io/component: watcher-collector
+        app: observer-collector
+        app.kubernetes.io/component: observer-collector
       annotations:
         prometheus.io/path: /metrics
         prometheus.io/port: "8899"
         prometheus.io/scrape: "true"
     spec:
       containers:
-        - name: watcher-collector
-          image: public.ecr.aws/p3k6k6h3/watcher-collector:0.1
+        - name: observer-collector
+          image: public.ecr.aws/p3k6k6h3/observer-collector:0.1
           ports:
             - containerPort: 8888
               name: otelcol-metrics
             - containerPort: 8899
-              name: watcher-metrics
+              name: observer-metrics
             - containerPort: 4317
               name: otlp-grpc
             - containerPort: 4318
@@ -36,9 +36,9 @@ spec:
               mountPath: /conf/collector.yaml
               subPath: collector.yaml
           command:
-            - "/mdai-watcher-collector"
+            - "/mdai-observer-collector"
             - "--config=/conf/collector.yaml"
       volumes:
         - name: config-volume
           configMap:
-            name: watcher-collector-config
+            name: observer-collector-config

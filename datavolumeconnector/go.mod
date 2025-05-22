@@ -1,4 +1,4 @@
-module github.com/decisiveai/watcher-collector/datavolumeconnector
+module github.com/decisiveai/mdai-collectors/datavolumeconnector
 
 go 1.23.4
 

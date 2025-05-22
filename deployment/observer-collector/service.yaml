@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: watcher-collector-service
+  name: observer-collector-service
   labels:
-    app: watcher-collector
+    app: observer-collector
 spec:
   selector:
-    app: watcher-collector
+    app: observer-collector
   ports:
     - port: 4317
       targetPort: otlp-grpc

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: watcher-collector-config
+  name: observer-collector-config
 data:
   collector.yaml: |
       receivers:
@@ -11,22 +11,22 @@ data:
               endpoint: 0.0.0.0:4317
       
       processors:
-        groupbyattrs/watcher1:
+        groupbyattrs/observer1:
           keys:
             - service.name
-        groupbyattrs/watcher2:
+        groupbyattrs/observer2:
           keys:
             - service.name
         deltatocumulative: {}
                               
-        filter/watcher1:
+        filter/observer1:
           logs:
             log_record:
-              - 'resource.attributes["watcher_direction"] != "received"'
-        filter/watcher2:
+              - 'resource.attributes["observer_direction"] != "received"'
+        filter/observer2:
           logs:
             log_record:
-              - 'resource.attributes["watcher_direction"] != "exported"'
+              - 'resource.attributes["observer_direction"] != "exported"'
       
       exporters:
         debug:
@@ -37,12 +37,12 @@ data:
             enabled: true
       
       connectors:
-        datavolume/watcher1:
+        datavolume/observer1:
           label_resource_attributes:
             - service.name
           count_metric_name: items_received_by_service_total
           bytes_metric_name: bytes_received_by_service_total
-        datavolume/watcher2:
+        datavolume/observer2:
           label_resource_attributes:
             - service.name
           count_metric_name: items_sent_by_service_total
@@ -66,15 +66,15 @@ data:
                       host: '0.0.0.0'
                       port: 8888
         pipelines:
-          logs/watcher1:
+          logs/observer1:
             receivers: [otlp]
-            processors: [filter/watcher1, groupbyattrs/watcher1]
-            exporters: [datavolume/watcher1]
-          logs/watcher2:
+            processors: [filter/observer1, groupbyattrs/observer1]
+            exporters: [datavolume/observer1]
+          logs/observer2:
             receivers: [otlp]
-            processors: [filter/watcher2, groupbyattrs/watcher2]
-            exporters: [datavolume/watcher2]
-          metrics/watcheroutput:
-            receivers: [datavolume/watcher1, datavolume/watcher2]
+            processors: [filter/observer2, groupbyattrs/observer2]
+            exporters: [datavolume/observer2]
+          metrics/observeroutput:
+            receivers: [datavolume/observer1, datavolume/observer2]
             processors: [deltatocumulative]
             exporters: [prometheus,debug]
