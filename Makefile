@@ -6,7 +6,7 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 # Update this version to match new release tag and run helm targets
-VERSION = 0.1.5
+VERSION = 0.1.6
 
 .PHONY: all
 all: build
