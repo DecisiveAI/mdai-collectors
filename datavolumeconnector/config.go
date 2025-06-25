@@ -16,7 +16,7 @@ type Config struct {
 }
 
 type LogsConfig struct {
-	// Add Log severity text as a label
+	// 'logs.severity_text', 'logs.severity_number' or attribute name to count severity by
 	CountSeverityBy string `mapstructure:"count_severity_by"`
 }
 

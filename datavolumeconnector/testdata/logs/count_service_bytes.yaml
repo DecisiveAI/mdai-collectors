@@ -14,7 +14,7 @@ resourceMetrics:
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "303"
+                - asInt: "344"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
@@ -34,7 +34,7 @@ resourceMetrics:
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "321"
+                - asInt: "362"
                   timeUnixNano: "1678390948393759000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
@@ -54,7 +54,7 @@ resourceMetrics:
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "320"
+                - asInt: "360"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
@@ -74,7 +74,7 @@ resourceMetrics:
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "328"
+                - asInt: "368"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true

@@ -18,6 +18,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -27,6 +29,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWWARN"
+            severity_number: 13
           - attributes:
               - key: log_level
                 value:
@@ -36,11 +40,15 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWERROR"
+            severity_number: 17
           - body:
               stringValue: Super awesome log message!
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
         scope: {}
   - resource:
       attributes:
@@ -61,6 +69,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -70,6 +80,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -79,6 +91,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWERROR"
+            severity_number: 17
           - attributes:
               - key: log_level
                 value:
@@ -88,6 +102,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
         scope: {}
   - resource:
       attributes:
@@ -108,6 +124,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -117,6 +135,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -126,6 +146,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -135,6 +157,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
         scope: {}
   - resource:
       attributes:
@@ -156,6 +180,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -165,6 +191,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -174,6 +202,8 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
           - attributes:
               - key: log_level
                 value:
@@ -183,4 +213,6 @@ resourceLogs:
             spanId: ""
             timeUnixNano: "1736889934967986176"
             traceId: ""
+            severity_text: "FWINFO"
+            severity_number: 9
         scope: {}

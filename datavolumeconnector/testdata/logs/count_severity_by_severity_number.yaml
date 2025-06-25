@@ -9,20 +9,29 @@ resourceMetrics:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: severity_by_number_total
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "4"
+                - asInt: "2"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Info"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
-              isMonotonic: true
-          - name: service_byte_total
-            unit: bytes
-            sum:
-              aggregationTemporality: 1
-              dataPoints:
-                - asInt: "344"
+                - asInt: "1"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Warn"
+                  timeUnixNano: "1678390948393725000"
+                  startTimeUnixNano: "1678390948393725000"
+                - asInt: "1"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Error"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
@@ -37,20 +46,22 @@ resourceMetrics:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: severity_by_number_total
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "4"
-                  timeUnixNano: "1678390948393759000"
+                - asInt: "3"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Info"
+                  timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
-              isMonotonic: true
-          - name: service_byte_total
-            unit: bytes
-            sum:
-              aggregationTemporality: 1
-              dataPoints:
-                - asInt: "362"
+                - asInt: "1"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Error"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
@@ -65,20 +76,15 @@ resourceMetrics:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: severity_by_number_total
             sum:
               aggregationTemporality: 1
               dataPoints:
                 - asInt: "4"
-                  timeUnixNano: "1678390948393725000"
-                  startTimeUnixNano: "1678390948393725000"
-              isMonotonic: true
-          - name: service_byte_total
-            unit: bytes
-            sum:
-              aggregationTemporality: 1
-              dataPoints:
-                - asInt: "360"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Info"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true
@@ -93,20 +99,22 @@ resourceMetrics:
             stringValue: logs
     scopeMetrics:
       - metrics:
-          - name: service_count_total
+          - name: severity_by_number_total
             sum:
               aggregationTemporality: 1
               dataPoints:
-                - asInt: "5"
+                - asInt: "4"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Info"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
-              isMonotonic: true
-          - name: service_byte_total
-            unit: bytes
-            sum:
-              aggregationTemporality: 1
-              dataPoints:
-                - asInt: "368"
+                - asInt: "1"
+                  attributes:
+                    - key: "log_severity"
+                      value:
+                        stringValue: "Unspecified"
                   timeUnixNano: "1678390948393725000"
                   startTimeUnixNano: "1678390948393725000"
               isMonotonic: true

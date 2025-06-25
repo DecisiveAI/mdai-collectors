@@ -79,6 +79,42 @@ func TestLogsToMetrics(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "count_severity_by_severity_number",
+			cfg: &Config{
+				CountMetricName: "severity_by_number_total",
+				Logs: &LogsConfig{
+					CountSeverityBy: "log.severity_number",
+				},
+				LabelResourceAttributes: []string{
+					"service.name",
+				},
+			},
+		},
+		{
+			name: "count_severity_by_severity_text",
+			cfg: &Config{
+				CountMetricName: "severity_by_text_total",
+				Logs: &LogsConfig{
+					CountSeverityBy: "log.severity_text",
+				},
+				LabelResourceAttributes: []string{
+					"service.name",
+				},
+			},
+		},
+		{
+			name: "count_severity_by_attribute",
+			cfg: &Config{
+				CountMetricName: "severity_by_level_total",
+				Logs: &LogsConfig{
+					CountSeverityBy: "log_level",
+				},
+				LabelResourceAttributes: []string{
+					"service.name",
+				},
+			},
+		},
 	}
 
 	for _, testCase := range testCases {

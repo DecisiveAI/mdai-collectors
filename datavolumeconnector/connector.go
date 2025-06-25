@@ -98,7 +98,8 @@ func (c *connectorImp) measureLogs(outputResourceMetrics pmetric.ResourceMetrics
 			scopeLogs := resourceLogs.ScopeLogs().At(j)
 			countValue += scopeLogs.LogRecords().Len()
 		}
-		addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, nil, int64(countValue))
+		sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.CountMetricName, "")
+		addDataPointWithAttributes(sumScopeMetric, nil, timestamp, int64(countValue))
 	}
 
 	if c.config.BytesMetricName != "" {
@@ -107,7 +108,8 @@ func (c *connectorImp) measureLogs(outputResourceMetrics pmetric.ResourceMetrics
 		// TODO: Opportunity for optimization here. Can we use protoreflect to measure these instead? Or add a reference instead?
 		resourceLogs.CopyTo(isolatedResourceLogs)
 		bytes := int64(plogSizer.LogsSize(isolatedPlog))
-		addOutputMetricToScopeMetrics(outputScopeMetric, c.config.BytesMetricName, "bytes", timestamp, nil, bytes)
+		sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.BytesMetricName, "bytes")
+		addDataPointWithAttributes(sumScopeMetric, nil, timestamp, bytes)
 	}
 }
 
@@ -138,15 +140,15 @@ func (c *connectorImp) countLogsBySeverity(resourceLogs plog.ResourceLogs, outpu
 		}
 	}
 
+	outputScopeMetric := outputResourceMetrics.ScopeMetrics().AppendEmpty()
+	sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.CountMetricName, "")
 	for severityValue, recordCount := range severityCounts {
-		outputScopeMetric := outputResourceMetrics.ScopeMetrics().AppendEmpty()
 		attributesMap := make(map[string]any)
 		attributesMap["log_severity"] = severityValue
-		addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, &attributesMap, int64(recordCount))
+		addDataPointWithAttributes(sumScopeMetric, &attributesMap, timestamp, int64(recordCount))
 	}
 	if otherCount > 0 {
-		outputScopeMetric := outputResourceMetrics.ScopeMetrics().AppendEmpty()
-		addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, nil, otherCount)
+		addDataPointWithAttributes(sumScopeMetric, nil, timestamp, otherCount)
 	}
 
 	/*
@@ -190,7 +192,8 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 				scopeSpans := resourceSpans.ScopeSpans().At(j)
 				countValue += scopeSpans.Spans().Len()
 			}
-			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, nil, int64(countValue))
+			sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.CountMetricName, "")
+			addDataPointWithAttributes(sumScopeMetric, nil, timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
@@ -199,7 +202,8 @@ func (c *connectorImp) ConsumeTraces(ctx context.Context, traces ptrace.Traces) 
 			// TODO: Opportunity for optimization here. Can we use protoreflect to measure these instead? Or add a reference instead?
 			resourceSpans.CopyTo(isolatedResourceSpans)
 			bytes := int64(ptraceSizer.TracesSize(isolatedPtraces))
-			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.BytesMetricName, "bytes", timestamp, nil, bytes)
+			sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.BytesMetricName, "bytes")
+			addDataPointWithAttributes(sumScopeMetric, nil, timestamp, bytes)
 		}
 	}
 
@@ -238,7 +242,8 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 				scopeMetrics := resourceMetrics.ScopeMetrics().At(j)
 				countValue += scopeMetrics.Metrics().Len()
 			}
-			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.CountMetricName, "", timestamp, nil, int64(countValue))
+			sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.CountMetricName, "")
+			addDataPointWithAttributes(sumScopeMetric, nil, timestamp, int64(countValue))
 		}
 
 		if c.config.BytesMetricName != "" {
@@ -247,14 +252,15 @@ func (c *connectorImp) ConsumeMetrics(ctx context.Context, metrics pmetric.Metri
 			// TODO: Opportunity for optimization here. Can we use protoreflect to measure these instead? Or add a reference instead?
 			resourceMetrics.CopyTo(isolatedResourceMetrics)
 			bytes := int64(pmetricSizer.MetricsSize(isolatedPmetrics))
-			addOutputMetricToScopeMetrics(outputScopeMetric, c.config.BytesMetricName, "bytes", timestamp, nil, bytes)
+			sumScopeMetric := addAndGetSumMetric(outputScopeMetric, c.config.BytesMetricName, "bytes")
+			addDataPointWithAttributes(sumScopeMetric, nil, timestamp, bytes)
 		}
 	}
 
 	return c.metricsConsumer.ConsumeMetrics(ctx, outputMetrics)
 }
 
-func addOutputMetricToScopeMetrics(scopeMetric pmetric.ScopeMetrics, metricName string, unit string, timestamp pcommon.Timestamp, attributes *map[string]any, value int64) {
+func addAndGetSumMetric(scopeMetric pmetric.ScopeMetrics, metricName string, unit string) pmetric.Sum {
 	metric := scopeMetric.Metrics().AppendEmpty()
 	metric.SetName(metricName)
 	if unit != "" {
@@ -263,6 +269,10 @@ func addOutputMetricToScopeMetrics(scopeMetric pmetric.ScopeMetrics, metricName 
 	sum := metric.SetEmptySum()
 	sum.SetIsMonotonic(true)
 	sum.SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
+	return sum
+}
+
+func addDataPointWithAttributes(sum pmetric.Sum, attributes *map[string]any, timestamp pcommon.Timestamp, value int64) {
 	dataPoints := sum.DataPoints()
 	dataPoint := dataPoints.AppendEmpty()
 	if attributes != nil {
