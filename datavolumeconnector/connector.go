@@ -75,9 +75,7 @@ func (c *connectorImp) ConsumeLogs(ctx context.Context, logs plog.Logs) error {
 			c.logger.Error("error adding attributes to datavolume metric for logs measurement", zap.Error(err), zap.Any("attributes_map", metricAttrMap))
 		}
 
-		var (
-			countBySeverity = c.config.Logs != nil && c.config.Logs.CountSeverityBy != ""
-		)
+		var countBySeverity = c.config.Logs != nil && c.config.Logs.CountSeverityBy != ""
 		if countBySeverity {
 			c.countLogsBySeverity(resourceLogs, outputResourceMetrics, timestamp)
 		} else {
