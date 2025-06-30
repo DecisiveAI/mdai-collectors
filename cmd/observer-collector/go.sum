@@ -251,6 +251,8 @@ github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f h1:KUppIJq7/+SVif2QVs3tOP0zanoHgBEVAwHxUSIzRqU=
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
+github.com/open-telemetry/opentelemetry-collector-contrib/connector/countconnector v0.121.0 h1:xAeHR9fXM99MDD2ubbnbXi5lBbgTiz2Bx/Ir0dQq540=
+github.com/open-telemetry/opentelemetry-collector-contrib/connector/countconnector v0.121.0/go.mod h1:0Pkc0d4hlqUFmYAsX51pwfIULQWfC2z2tQ+vpZr3l+4=
 github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.121.0 h1:t4auPAdvyl437eQQ6P0SzZRn55/d439WK9268p3bJdc=
 github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.121.0/go.mod h1:fFtAEjQygwWnabKV++P/OqokQ8YlotrTWQFdT5hcc4M=
 github.com/open-telemetry/opentelemetry-collector-contrib/extension/cgroupruntimeextension v0.121.0 h1:/JcxP3ropvDtec1YXpXypO3L/uzC7SeZLE2DfHwBsM0=
