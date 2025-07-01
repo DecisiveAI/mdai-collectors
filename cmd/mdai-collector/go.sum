@@ -438,6 +438,8 @@ github.com/onsi/gomega v0.0.0-20170829124025-dcabb60a477c/go.mod h1:C1qb7wdrVGGV
 github.com/onsi/gomega v1.7.0/go.mod h1:ex+gbHU/CVuBBDIJjb2X0qEXbFg53c61hWP/1CpauHY=
 github.com/onsi/gomega v1.35.1 h1:Cwbd75ZBPxFSuZ6T+rN/WCb/gOc6YgFBXLlZLhC7Ds4=
 github.com/onsi/gomega v1.35.1/go.mod h1:PvZbdDc8J6XJEpDK4HCuRBm8a6Fzp9/DmhC9C7yFlog=
+github.com/open-telemetry/opentelemetry-collector-contrib/connector/countconnector v0.121.0 h1:xAeHR9fXM99MDD2ubbnbXi5lBbgTiz2Bx/Ir0dQq540=
+github.com/open-telemetry/opentelemetry-collector-contrib/connector/countconnector v0.121.0/go.mod h1:0Pkc0d4hlqUFmYAsX51pwfIULQWfC2z2tQ+vpZr3l+4=
 github.com/open-telemetry/opentelemetry-collector-contrib/connector/routingconnector v0.121.0 h1:jb5R8XRsnyJm/auKfXuuYtUukrFPHNZp4LLE6VuhiQ8=
 github.com/open-telemetry/opentelemetry-collector-contrib/connector/routingconnector v0.121.0/go.mod h1:/xM1I1hkeuDgUIBY2ENxULc28PgBBNTpZWxC8qN8kmA=
 github.com/open-telemetry/opentelemetry-collector-contrib/exporter/awss3exporter v0.121.0 h1:q1q03PtVaqJsTDJJjM6IzBYmIO78jGINd1hvjWbbYD4=

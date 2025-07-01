@@ -8,6 +8,7 @@ toolchain go1.24.3
 
 require (
 	github.com/decisiveai/mdai-collectors/datavolumeconnector v0.1.3
+	github.com/open-telemetry/opentelemetry-collector-contrib/connector/countconnector v0.121.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/connector/routingconnector v0.121.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/awss3exporter v0.121.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/fileexporter v0.121.0
