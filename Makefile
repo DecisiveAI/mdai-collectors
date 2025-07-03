@@ -6,7 +6,8 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 # Update this version to match new release tag and run helm targets
-VERSION = 0.1.5
+OBSERVER_VERSION = 0.1.5
+MDAICOL_VERSION = 0.1.6
 
 .PHONY: all
 all: build
@@ -17,7 +18,7 @@ build:
 
 .PHONY: docker-build
 docker-build:
-	docker build -t  public.ecr.aws/decisiveai/observer-collector:${VERSION} .
+	docker build -t  public.ecr.aws/decisiveai/observer-collector:${OBSERVER_VERSION} .
 
 .PHONY: build-mdai-collector
 build-mdai-collector:
@@ -25,4 +26,4 @@ build-mdai-collector:
 
 .PHONY: docker-build-mdai-collector
 docker-build-mdai-collector:
-	docker build -t public.ecr.aws/decisiveai/mdai-collector:${VERSION} -f mdai-collector.Dockerfile .
+	docker build -t public.ecr.aws/decisiveai/mdai-collector:${MDAICOL_VERSION} -f mdai-collector.Dockerfile .
